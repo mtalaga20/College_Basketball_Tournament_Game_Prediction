@@ -2,7 +2,6 @@
 '''
 
 import pandas as pd 
-import numpy as np 
 
 def predict(year:str,model):
     csv_path = r'C:\Users\mktal\repos\College_Basketball_Game_Prediction\CSV_Data\\'
@@ -10,6 +9,9 @@ def predict(year:str,model):
     games = pd.read_csv(csv_path + f'{year}\\new_tourney.csv').to_numpy().tolist()
     basic_dif = pd.read_csv(csv_path + f'{year}\\basic_differential.csv')
     adv_dif = pd.read_csv(csv_path + f'{year}\\adv_differential.csv')
+    coach = pd.read_csv(csv_path+f'{year}\\coach.csv')
+    coach = coach.fillna(0)
+
     column_size = len(basic_dif.columns)+len(adv_dif.columns)
     #final_dif = np.empty(shape=[0,column_size-2])
     complete = False
@@ -32,11 +34,13 @@ def predict(year:str,model):
 
             away_basic = basic_dif.loc[basic_dif['School'] == away_team].to_numpy().flatten()
             away_adv = adv_dif.loc[adv_dif['School'] == away_team].to_numpy().flatten()
+            away_coach = coach.loc[coach['School'] == away_team].to_numpy().flatten()
             try:
                 home_basic = basic_dif.loc[basic_dif['School'] == home_team].to_numpy().flatten()
             except:
                 print('Completed predictions')
             home_adv = adv_dif.loc[adv_dif['School'] == home_team].to_numpy().flatten()
+            home_coach = coach.loc[coach['School'] == home_team].to_numpy().flatten()
 
             differential = [] #[away_team, home_team]
             for j in range(2, (column_size-2)):
@@ -45,6 +49,18 @@ def predict(year:str,model):
                 else:
                     differential.append(home_adv[j-len(basic_dif.columns)+2] - away_adv[j-len(basic_dif.columns)+2])
             
+            #Coach stats
+            differential.append(home_coach[14]-away_coach[14])
+            differential.append(home_coach[15]-away_coach[15])
+            differential.append(home_coach[16]-away_coach[16])
+            differential.append(home_coach[17]-away_coach[17])
+            differential.append(home_coach[18]-away_coach[18])
+            differential.append(home_coach[22]-away_coach[22])
+            differential.append(home_coach[23]-away_coach[23])
+            differential.append(home_coach[24]-away_coach[24])
+            differential.append(home_coach[25]-away_coach[25])
+            differential.append(int(home_coach[26])-int(away_coach[26]))
+
             pred = model.predict([differential])[0]
             winner = home_team if pred > 0 else away_team
             loser = home_team if winner == away_team else away_team
@@ -64,14 +80,8 @@ def predict(year:str,model):
                     print(f"\nCould not find next game for {winner}")
             print()
                 
-
         #except:
             #complete=True
             #log += f'The winner is {winner}'
 
-
-
-
-
     return log
-

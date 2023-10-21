@@ -14,18 +14,18 @@ import pandas as pd
 import warnings
 warnings.filterwarnings("ignore")
 
-csv_path = r'C:\Users\mktal\repos\College_Basketball_Game_Prediction\CSV_Data\\'
+def preprocess_differentials(year:str):
+    csv_path = r'C:\Users\mktal\repos\College_Basketball_Game_Prediction\CSV_Data\\'
 
-#Conference Pre-process
-teams = pd.read_csv(csv_path+'teams.csv')
-big_ten = teams.loc[teams['Conference'] == 'Big 10']['School'].to_numpy().tolist()
-acc = teams.loc[teams['Conference'] == 'ACC']['School'].to_numpy().tolist()
-big_east = teams.loc[teams['Conference'] == 'Big East']['School'].to_numpy().tolist()
-big_twelve = teams.loc[teams['Conference'] == 'Big 12']['School'].to_numpy().tolist()
-sec = teams.loc[teams['Conference'] == 'SEC']['School'].to_numpy().tolist()
-blueblood = ['Duke','North Carolina','Kentucky','UCLA','Kansas','Indiana']
+    #Conference Pre-process
+    teams = pd.read_csv(csv_path+'teams.csv')
+    big_ten = teams.loc[teams['Conference'] == 'Big 10']['School'].to_numpy().tolist()
+    acc = teams.loc[teams['Conference'] == 'ACC']['School'].to_numpy().tolist()
+    big_east = teams.loc[teams['Conference'] == 'Big East']['School'].to_numpy().tolist()
+    big_twelve = teams.loc[teams['Conference'] == 'Big 12']['School'].to_numpy().tolist()
+    sec = teams.loc[teams['Conference'] == 'SEC']['School'].to_numpy().tolist()
+    blueblood = ['Duke','North Carolina','Kentucky','UCLA','Kansas','Indiana']
 
-for year in [2016,2017,2018,2019,2021,2022,2023]:
     #Basic stats pre-processing
     basic_dif = pd.read_csv(csv_path+f'{year}\\basic_differential.csv')
     #try:
@@ -71,4 +71,5 @@ for year in [2016,2017,2018,2019,2021,2022,2023]:
         print(f'Year {year} has already been preprocessed or is not formatted correctly.')
     
     basic_dif.to_csv(csv_path+f'{year}\\basic_differential.csv', index=False)
-    
+    return None
+        

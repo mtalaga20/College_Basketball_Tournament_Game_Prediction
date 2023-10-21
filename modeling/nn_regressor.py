@@ -3,47 +3,34 @@ Simple models to train and test with
 '''
 
 import pandas as pd 
-import numpy as np 
-import matplotlib.pyplot as plt 
-import seaborn as sns 
-from sklearn.model_selection import train_test_split 
-
 from sklearn.metrics import mean_squared_error, mean_absolute_error 
-import keras
 from keras.models import Sequential
 from keras.layers import Dense
-from predict import predict
-
-#from utility import generate_mock_games
-
-csv_path = r'C:\Users\mktal\repos\College_Basketball_Game_Prediction\CSV_Data\\'
-
-df = pd.read_csv(csv_path+f'2022\\2022_data.csv')
-df = df.iloc[:,2:]
-
-for year in [2016,2017,2018,2019,2021]:
-    small_df = pd.read_csv(csv_path+f'{year}\\{year}_data.csv')
-    small_df = small_df.iloc[:,2:]
-    df = pd.concat([df,small_df])
-
-X = df.drop('Score_Dif',axis= 1) 
-Y = df['Score_Dif'] 
-X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.30, random_state=40)
 
 
-#Train
-input_size = len(df.columns)-1
-model = Sequential()
-model.add(Dense(500, input_dim=input_size, activation= "relu"))
-model.add(Dense(100, activation= "relu"))
-model.add(Dense(50, activation= "relu"))
-model.add(Dense(1))
+def nn_regressor(X_train:pd.DataFrame,X_test:pd.DataFrame,y_train:pd.DataFrame,
+                     y_test:pd.DataFrame,X:pd.DataFrame,y:pd.DataFrame):
+    name = "Neural Net"
 
-model.compile(loss= "mean_squared_error" , optimizer="adam", metrics=["mean_squared_error"])
-model.fit(X_train, y_train, epochs=16)
+    #Train
+    input_size = len(X_train.columns)
+    model = Sequential()
+    model.add(Dense(500, input_dim=input_size, activation= "relu"))
+    model.add(Dense(100, activation= "relu"))
+    model.add(Dense(50, activation= "relu"))
+    model.add(Dense(1))
 
-pred_test = model.predict(X_test)
-print(np.sqrt(mean_squared_error(y_test,pred_test)))
+    model.compile(loss= "mean_squared_error" , optimizer="adam", metrics=["mean_squared_error"])
+    model.fit(X_train, y_train, epochs=16)
+    predictions = model.predict(X_test)
+    r_squared = None
+    mse = mean_squared_error(y_test, predictions)
+    mae = mean_absolute_error(y_test, predictions)
 
-champion = predict('2023', model)
-print(champion)
+    print(f"\n--- {name} ---")
+    print( 
+    'mean_squared_error : ', mean_squared_error(y_test, predictions)) 
+    print( 
+    'mean_absolute_error : ', mean_absolute_error(y_test, predictions))
+
+    return  name,model,mse,mae,r_squared
