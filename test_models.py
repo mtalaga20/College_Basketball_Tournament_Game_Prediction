@@ -20,15 +20,21 @@ from modeling import ransac_regressor
 from modeling import gaussian_process_regressor
 
 warnings.filterwarnings("ignore")
+
+#----------------------------------------------
+prediction_year = 2022 #year or None
+#----------------------------------------------
+
 csv_path = r'C:\Users\mktal\repos\College_Basketball_Game_Prediction\CSV_Data\\'
 beginning_year = 2010
-years = [2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2021,2022]
-model_functions = [linear_regressor.linear_regressor,
+years = [2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2021,2022,2023]
+if prediction_year is not None: years.remove(prediction_year)
+model_functions = [#linear_regressor.linear_regressor,
                    #ransac_regressor.ransac_regressor,
                    gradient_boost_regressor.gb_regressor,
                    #nn_regressor.nn_regressor, 
-                   random_forest_regressor.random_forest_regressor,
-                   gaussian_process_regressor.gaussian_process_regressor,
+                   #random_forest_regressor.random_forest_regressor,
+                   #gaussian_process_regressor.gaussian_process_regressor,
                    #svm_regressor.svr_regressor
                    ] #Models all have the same parameters
 df = pd.read_csv(csv_path+f'{beginning_year}\\{beginning_year}_data.csv')
@@ -62,7 +68,8 @@ mse = mean_squared_error(y_test, voter_pred)
 mae = mean_absolute_error(y_test, voter_pred)
 results.append(["Voter",mse,mae,r_squared])
 
-prediction = predict.predict('2023',voter_model)
-print(prediction)
+if prediction_year is not None:
+    prediction = predict.predict('2023',voter_model)
+    print(prediction)
 
 pd.DataFrame(results,columns=["Name","MSE","MAE","R-Squared"]).to_csv(r'C:\Users\mktal\repos\College_Basketball_Game_Prediction\evaluation\results.csv')

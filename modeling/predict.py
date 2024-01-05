@@ -28,9 +28,6 @@ def predict(year:str,model):
                     home_team = games[i][0]
                     home_index = i
                     break
-                
-    
-        
 
             away_basic = basic_dif.loc[basic_dif['School'] == away_team].to_numpy().flatten()
             away_adv = adv_dif.loc[adv_dif['School'] == away_team].to_numpy().flatten()
