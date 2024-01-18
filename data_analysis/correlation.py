@@ -14,4 +14,7 @@ for year in [2012,2013,2014,2015,2016,2017,2018,2019,2021,2022]:
 
 matrix = df.corr().round(4)
 sns.heatmap(matrix, annot=True, vmax=1, vmin=-1, center=0, cmap='vlag')
-plt.show()
+#plt.show()
+top25 = matrix.sort_values('Score_Dif', ascending=False)['Score_Dif'].head(25)
+top25_ascending = matrix.sort_values('Score_Dif')['Score_Dif'].head(25)
+print(top25)
