@@ -132,7 +132,7 @@ def rank_teams(prediction_year:str) -> None:
         rows.append([i+1, teams[i]["Team"], teams[i]["Wins"], teams[i]["Conference"], teams[i]["W"], teams[i]["L"], teams[i]["SRS"],
                      teams[i]["AP"], teams[i]["OSRS"], teams[i]["DSRS"]])
 
-    df = pd.DataFrame(rows, columns=['Ranking', 'TeamName', 'Score', 'Conference', 'W', 'L', 'SRS', 'AP Rank', 'OSRS', 'DSRS'])
+    df = pd.DataFrame(rows, columns=['Ranking', 'TeamName', 'Score', 'Conference', 'W', 'L', 'SRS', 'APRank', 'OSRS', 'DSRS'])
     df.to_csv(f'evaluation/{prediction_year}_rankings.csv', index=False)
 
     #Add to database
