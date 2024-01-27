@@ -22,13 +22,13 @@ from modeling import gaussian_process_regressor
 warnings.filterwarnings("ignore")
 
 #----------------------------------------------
-prediction_year = 2022 #year or None
+prediction_year = 2024 #year or None
 #----------------------------------------------
 
-csv_path = r'C:\Users\mktal\repos\College_Basketball_Game_Prediction\CSV_Data\\'
+csv_path = r'CSV_Data\\'
 beginning_year = 2010
 years = [2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2021,2022,2023]
-if prediction_year is not None: years.remove(prediction_year)
+if prediction_year is not None and prediction_year in years: years.remove(prediction_year)
 model_functions = [#linear_regressor.linear_regressor,
                    #ransac_regressor.ransac_regressor,
                    gradient_boost_regressor.gb_regressor,
@@ -69,7 +69,8 @@ mae = mean_absolute_error(y_test, voter_pred)
 results.append(["Voter",mse,mae,r_squared])
 
 if prediction_year is not None:
-    prediction = predict.predict('2023',voter_model)
+    prediction = predict.predict(str(prediction_year),voter_model)
     print(prediction)
+    pd.DataFrame(prediction, columns=["Id", "Year", "Game", "GameNum", "Result"]).to_csv(f'evaluation/{prediction_year}_tournament_results.csv', index=False)
 
-pd.DataFrame(results,columns=["Name","MSE","MAE","R-Squared"]).to_csv(r'C:\Users\mktal\repos\College_Basketball_Game_Prediction\evaluation\results.csv')
+pd.DataFrame(results,columns=["Name","MSE","MAE","R-Squared"]).to_csv(r'evaluation\results.csv')

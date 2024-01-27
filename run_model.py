@@ -5,6 +5,7 @@ Code to rank the teams in a year
 import pandas as pd
 import pickle
 import warnings
+from platform import python_version
 from modeling import gradient_boost_regressor
 from sklearn.ensemble import VotingRegressor
 from sklearn.model_selection import train_test_split 
@@ -15,7 +16,7 @@ warnings.filterwarnings("ignore")
 prediction_year = 2023 #year or None
 #----------------------------------------------
 
-csv_path = r'C:\Users\mktal\repos\College_Basketball_Game_Prediction\CSV_Data\\'
+csv_path = r'CSV_Data\\'
 beginning_year = 2010
 years = [2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2021,2022,2023]
 if prediction_year is not None: years.remove(prediction_year)
@@ -45,5 +46,5 @@ for model in model_functions:
 voter_model = VotingRegressor(estimators=models)
 voter_model.fit(X, y)
 
-with open('modeling/best-model.pkl','wb') as f:
+with open(f'modeling/best-model{python_version()}.pkl','wb') as f:
     pickle.dump(voter_model,f)

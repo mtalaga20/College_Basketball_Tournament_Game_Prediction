@@ -11,7 +11,7 @@ import numpy as np
 
 def create_differentials(year:str):
 # -- PART A -- #
-    csv_path = r'C:\Users\mktal\repos\College_Basketball_Game_Prediction\CSV_Data\\'
+    csv_path = r'CSV_Data\\'
         
     basic = pd.read_csv(csv_path+f'{year}\\basic.csv')
     basic_opp = pd.read_csv(csv_path+f'{year}\\basic_opp.csv')

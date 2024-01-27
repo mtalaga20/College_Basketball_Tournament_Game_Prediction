@@ -15,7 +15,7 @@ import warnings
 warnings.filterwarnings("ignore")
 
 def preprocess_differentials(year:str):
-    csv_path = r'C:\Users\mktal\repos\College_Basketball_Game_Prediction\CSV_Data\\'
+    csv_path = r'CSV_Data\\'
 
     #Conference Pre-process
     teams = pd.read_csv(csv_path+'teams.csv')

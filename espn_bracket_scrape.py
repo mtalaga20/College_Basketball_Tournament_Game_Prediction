@@ -63,7 +63,7 @@ team_map = pd.Series(
     ).to_dict()    
 
 #Make play-ins play each other
-with open(f'C:/Users/mktal/repos/College_Basketball_Game_Prediction/modeling/best-model{python_version()}.pkl', 'rb') as f:
+with open(f'modeling/best-model{python_version()}.pkl', 'rb') as f:
     model = pickle.load(f)
 
 winners = []

@@ -9,7 +9,7 @@ warnings.filterwarnings("ignore")
 def team_versus(team_one, team_two, year, model):
     if True:
     #try:
-        csv_path = r'C:\Users\mktal\repos\College_Basketball_Game_Prediction\CSV_Data\\'
+        csv_path = r'CSV_Data\\'
         basic_dif = pd.read_csv(csv_path + f'{year}\\basic_differential.csv')
         adv_dif = pd.read_csv(csv_path + f'{year}\\adv_differential.csv')
         coach = pd.read_csv(csv_path+f'{year}\\coach.csv')

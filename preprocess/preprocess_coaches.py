@@ -7,7 +7,7 @@ import numpy as np
 # -- PART B-2 -- #
 
 def preprocess_coaches(year:str):
-    csv_path = r'C:\Users\mktal\repos\College_Basketball_Game_Prediction\CSV_Data\\'
+    csv_path = r'CSV_Data\\'
 
     coach_team_map = pd.read_csv(csv_path+"coach_team_map.csv")
     coach_team_map = pd.Series(
@@ -18,5 +18,9 @@ def preprocess_coaches(year:str):
     coach = pd.read_csv(csv_path+f'{year}\\coach.csv')
     change = coach.replace({"School":coach_team_map})
     change.to_csv(csv_path+f'{year}\\coach.csv', index=False)
+    
+    ratings = pd.read_csv(csv_path+f'{year}\\ratings.csv')
+    change = ratings.replace({"School":coach_team_map})
+    change.to_csv(csv_path+f'{year}\\ratings.csv', index=False)
     
     return None

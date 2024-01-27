@@ -8,7 +8,7 @@ warnings.filterwarnings("ignore")
 
 def team_versus(team_one, team_two):
     try:
-        csv_path = r'C:\Users\mktal\repos\College_Basketball_Game_Prediction\CSV_Data\\'
+        csv_path = r'CSV_Data\\'
         year = 2024 #TODO:
         team_one = sys.argv[1]
         team_two = sys.argv[2]
@@ -18,7 +18,7 @@ def team_versus(team_one, team_two):
         coach = pd.read_csv(csv_path+f'{year}\\coach.csv')
         column_size = len(basic_dif.columns)+len(adv_dif.columns)
 
-        with open(r'C:\Users\mktal\repos\College_Basketball_Game_Prediction\modeling\best-model.pkl', 'rb') as f:
+        with open(r'modeling\best-model.pkl', 'rb') as f:
             model = pickle.load(f)
 
         for i in range(2):
@@ -67,7 +67,7 @@ def team_versus(team_one, team_two):
         print(e)
 
 try:
-    csv_path = r'C:\Users\mktal\repos\College_Basketball_Game_Prediction\CSV_Data\\'
+    csv_path = r'CSV_Data\\'
     year = 2024 #TODO:
     team_one = sys.argv[1]
     team_two = sys.argv[2]
@@ -77,7 +77,7 @@ try:
     coach = pd.read_csv(csv_path+f'{year}\\coach.csv')
     column_size = len(basic_dif.columns)+len(adv_dif.columns)
 
-    with open(r'C:\Users\mktal\repos\College_Basketball_Game_Prediction\modeling\best-model.pkl', 'rb') as f:
+    with open(r'modeling\best-model.pkl', 'rb') as f:
         model = pickle.load(f)
 
     for i in range(2):
