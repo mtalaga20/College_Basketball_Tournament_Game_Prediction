@@ -61,7 +61,7 @@ def rank_teams(prediction_year:str) -> None:
     coach = pd.read_csv(csv_path+f'{prediction_year}\\coach.csv')
     coach = coach.fillna(0)
     ratings = pd.read_csv(csv_path+f'{prediction_year}\\ratings.csv')
-    ratings = coach.fillna(0)
+    ratings = ratings.fillna(0)
     column_size = len(basic_dif.columns)+len(adv_dif.columns)
     final_dif = np.empty(shape=[0,COACH_COLUMNS+column_size-1])
     teams = []
@@ -72,6 +72,7 @@ def rank_teams(prediction_year:str) -> None:
     all_teams = [i for i in all_teams if i not in remove_teams]
     total = len(all_teams) - 1
 
+    #Play all teams
     for i in range(basic_dif.shape[0] - len(remove_teams)):
         away_team = all_teams[i]
         conference = conferences.loc[conferences['Team'] == away_team]['Conference'].item() if away_team in conferences['Team'].values else '-'
@@ -121,14 +122,17 @@ def rank_teams(prediction_year:str) -> None:
             if pred < 0:
                 wins += 1
 
-        teams.append({"Team": away_team, "Wins": wins, "Conference": conference})
+        teams.append({"Team": away_team, "Wins": wins, "Conference": conference, "W": away_ratings[5], "L": away_ratings[6],
+                      "SRS": away_ratings[15], "AP": int(away_ratings[4]), "OSRS": away_ratings[13],
+                      "DSRS": away_ratings[14]})
 
     teams = sorted(teams, key=lambda i: i['Wins'], reverse=True)
     rows = []
     for i in range(len(teams)):
-        rows.append([i+1, teams[i]["Team"], teams[i]["Wins"], teams[i]["Conference"]])
+        rows.append([i+1, teams[i]["Team"], teams[i]["Wins"], teams[i]["Conference"], teams[i]["W"], teams[i]["L"], teams[i]["SRS"],
+                     teams[i]["AP"], teams[i]["OSRS"], teams[i]["DSRS"]])
 
-    df = pd.DataFrame(rows, columns=['Ranking', 'TeamName', 'Score', 'Conference'])
+    df = pd.DataFrame(rows, columns=['Ranking', 'TeamName', 'Score', 'Conference', 'W', 'L', 'SRS', 'AP Rank', 'OSRS', 'DSRS'])
     df.to_csv(f'evaluation/{prediction_year}_rankings.csv', index=False)
 
     #Add to database
