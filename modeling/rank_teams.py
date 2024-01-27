@@ -23,7 +23,7 @@ def rank_teams(prediction_year:str) -> None:
     #----------------------------------------------
 
     #cursor = sqlServerConnect.connect()
-    csv_path = r'C:\Users\mktal\repos\College_Basketball_Game_Prediction\CSV_Data\\'
+    csv_path = r'CSV_Data\\'
     beginning_year = 2010
     years = [2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2021,2022,2023,2024]
     if prediction_year is not None: years.remove(prediction_year)
@@ -57,9 +57,11 @@ def rank_teams(prediction_year:str) -> None:
 
     basic_dif = pd.read_csv(csv_path + f'{prediction_year}\\basic_differential.csv')
     adv_dif = pd.read_csv(csv_path + f'{prediction_year}\\adv_differential.csv')
-    coach = pd.read_csv(csv_path+f'{prediction_year}\\coach.csv')
     conferences = pd.read_csv(csv_path+'\\conferences.csv') 
+    coach = pd.read_csv(csv_path+f'{prediction_year}\\coach.csv')
     coach = coach.fillna(0)
+    ratings = pd.read_csv(csv_path+f'{prediction_year}\\ratings.csv')
+    ratings = coach.fillna(0)
     column_size = len(basic_dif.columns)+len(adv_dif.columns)
     final_dif = np.empty(shape=[0,COACH_COLUMNS+column_size-1])
     teams = []
@@ -76,6 +78,7 @@ def rank_teams(prediction_year:str) -> None:
         away_basic = basic_dif.loc[basic_dif['School'] == away_team].to_numpy().flatten()
         away_adv = adv_dif.loc[adv_dif['School'] == away_team].to_numpy().flatten()
         away_coach = coach.loc[coach['School'] == away_team].to_numpy().flatten()
+        away_ratings = ratings.loc[ratings['School'] == away_team].to_numpy().flatten()
 
         wins = 0
         for j in range(basic_dif.shape[0] - len(remove_teams)):
@@ -85,6 +88,7 @@ def rank_teams(prediction_year:str) -> None:
             home_basic = basic_dif.loc[basic_dif['School'] == home_team].to_numpy().flatten()
             home_adv = adv_dif.loc[adv_dif['School'] == home_team].to_numpy().flatten()
             home_coach = coach.loc[coach['School'] == home_team].to_numpy().flatten()
+            home_ratings = ratings.loc[ratings['School'] == home_team].to_numpy().flatten()
 
             new_row = []
             #new_row = [away_team, home_team]
@@ -105,6 +109,10 @@ def rank_teams(prediction_year:str) -> None:
             new_row.append(home_coach[24]-away_coach[24])
             new_row.append(home_coach[25]-away_coach[25])
             new_row.append(int(home_coach[26])-int(away_coach[26]))
+            #Rating Stats
+            new_row.append(home_ratings[12]-away_ratings[12]) #OSRS
+            new_row.append(home_ratings[13]-away_ratings[13]) #DSRS
+            new_row.append(home_ratings[16]-away_ratings[16]) #DRtg
             
             new_row = [0 if math.isnan(i) else i for i in new_row] 
 
